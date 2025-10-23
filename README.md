@@ -16,7 +16,7 @@ A modern, responsive Pokemon exploration app built with Next.js, TypeScript, and
 
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
-- **UI Library**: Material-UI (MUI) v6
+- **UI Library**: Material-UI (MUI) v7
 - **API**: PokeAPI (https://pokeapi.co/)
 - **Testing**: Jest + React Testing Library
 - **Code Quality**: ESLint, Prettier

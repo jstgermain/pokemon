@@ -16,7 +16,7 @@ export default function Home() {
   const { pokemon, loading, error, refetch } = usePokemonList(6);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }} component="main">
       <Box
         sx={{
           display: "flex",
@@ -30,19 +30,23 @@ export default function Home() {
           startIcon={<RefreshIcon />}
           onClick={refetch}
           disabled={loading}
+          aria-label="Load new random Pokemon"
         >
           New Pokemon
         </Button>
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 4 }}>
+        <Alert severity="error" sx={{ mb: 4 }} role="alert">
           {error}
         </Alert>
       )}
 
       {loading ? (
         <Box
+          role="status"
+          aria-live="polite"
+          aria-label="Loading Pokemon"
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -50,13 +54,13 @@ export default function Home() {
             minHeight: "400px",
           }}
         >
-          <CircularProgress size={60} />
+          <CircularProgress size={60} aria-label="Loading" />
         </Box>
       ) : (
-        <Grid container spacing={3}>
-          {pokemon.map((p) => (
-            <Grid item xs={12} sm={6} md={4} key={p.id}>
-              <PokemonCard pokemon={p} />
+        <Grid container spacing={3} component="section" aria-label="Pokemon list">
+          {pokemon.map((p, index) => (
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={p.id}>
+              <PokemonCard pokemon={p} priority={index < 3} />
             </Grid>
           ))}
         </Grid>

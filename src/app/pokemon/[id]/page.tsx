@@ -1,13 +1,13 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Container,
   Typography,
   Box,
   Card,
   CardContent,
-  CardMedia,
   Chip,
   Grid,
   CircularProgress,
@@ -31,6 +31,9 @@ export default function PokemonDetail() {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box
+          role="status"
+          aria-live="polite"
+          aria-label="Loading Pokemon details"
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -38,7 +41,7 @@ export default function PokemonDetail() {
             minHeight: "400px",
           }}
         >
-          <CircularProgress size={60} />
+          <CircularProgress size={60} aria-label="Loading" />
         </Box>
       </Container>
     );
@@ -47,12 +50,15 @@ export default function PokemonDetail() {
   if (error || !pokemon || !species) {
     return (
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Alert severity="error">{error || "Pokemon not found"}</Alert>
+        <Alert severity="error" role="alert">
+          {error || "Pokemon not found"}
+        </Alert>
         <Button
           variant="outlined"
           color="secondary"
           startIcon={<ArrowBackIcon />}
           onClick={() => router.push("/")}
+          aria-label="Return to Pokemon list"
           sx={{ mt: 2 }}
         >
           Back to Home
@@ -72,28 +78,35 @@ export default function PokemonDetail() {
         color="secondary"
         startIcon={<ArrowBackIcon />}
         onClick={() => router.push("/")}
+        aria-label="Return to Pokemon list"
         sx={{ mb: 3 }}
       >
         Back to Home
       </Button>
 
-      <Card>
+      <Card component="article" aria-label={`Details for ${formatPokemonName(pokemon.name)}`}>
         <Grid container>
-          <Grid item xs={12} md={5}>
-            <CardMedia
-              component="img"
-              image={getPokemonImageUrl(pokemon.id)}
-              alt={pokemon.name}
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box
               sx={{
+                position: "relative",
                 height: "100%",
                 minHeight: 400,
-                objectFit: "contain",
-                backgroundColor: "#f8f9fa",
+                backgroundColor: "grey.50",
                 p: 4,
               }}
-            />
+            >
+              <Image
+                src={getPokemonImageUrl(pokemon.id)}
+                alt={`${formatPokemonName(pokemon.name)} official artwork`}
+                fill
+                sizes="(max-width: 960px) 100vw, 40vw"
+                style={{ objectFit: "contain" }}
+                priority
+              />
+            </Box>
           </Grid>
-          <Grid item xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h2" component="h1" gutterBottom>
                 {formatPokemonName(pokemon.name)}
@@ -107,8 +120,8 @@ export default function PokemonDetail() {
                 #{pokemon.id.toString().padStart(3, "0")}
               </Typography>
 
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="h5" gutterBottom>
+              <Box sx={{ mb: 3 }} component="section" aria-labelledby="description-heading">
+                <Typography variant="h5" component="h2" id="description-heading" gutterBottom>
                   Description
                 </Typography>
                 <Typography variant="body1" paragraph>
@@ -117,8 +130,8 @@ export default function PokemonDetail() {
                 </Typography>
               </Box>
 
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="h5" gutterBottom>
+              <Box sx={{ mb: 3 }} component="section" aria-labelledby="gender-heading">
+                <Typography variant="h5" component="h2" id="gender-heading" gutterBottom>
                   Gender Distribution
                 </Typography>
                 <Typography variant="body1">
@@ -126,51 +139,53 @@ export default function PokemonDetail() {
                 </Typography>
               </Box>
 
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="h5" gutterBottom>
+              <Box sx={{ mb: 3 }} component="section" aria-labelledby="types-heading">
+                <Typography variant="h5" component="h2" id="types-heading" gutterBottom>
                   Types
                 </Typography>
-                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }} role="list" aria-label="Pokemon types">
                   {pokemon.types.map((type) => (
                     <Chip
                       key={type.type.name}
                       label={formatPokemonName(type.type.name)}
-                      color="primary"
+                      color="secondary"
+                      role="listitem"
                     />
                   ))}
                 </Box>
               </Box>
 
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="h5" gutterBottom>
+              <Box sx={{ mb: 3 }} component="section" aria-labelledby="abilities-heading">
+                <Typography variant="h5" component="h2" id="abilities-heading" gutterBottom>
                   Abilities
                 </Typography>
-                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }} role="list" aria-label="Pokemon abilities">
                   {pokemon.abilities.map((ability) => (
                     <Chip
                       key={ability.ability.name}
                       label={formatPokemonName(ability.ability.name)}
                       variant="outlined"
                       color="secondary"
+                      role="listitem"
                     />
                   ))}
                 </Box>
               </Box>
 
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Typography variant="body2" color="text.secondary">
+              <Grid container spacing={2} component="section" aria-label="Physical characteristics">
+                <Grid size={6}>
+                  <Typography variant="body2" color="text.secondary" component="h3">
                     Height
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h6" aria-label={`Height: ${(pokemon.height / 10).toFixed(1)} meters`}>
                     {(pokemon.height / 10).toFixed(1)} m
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2" color="text.secondary">
+                <Grid size={6}>
+                  <Typography variant="body2" color="text.secondary" component="h3">
                     Weight
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h6" aria-label={`Weight: ${(pokemon.weight / 10).toFixed(1)} kilograms`}>
                     {(pokemon.weight / 10).toFixed(1)} kg
                   </Typography>
                 </Grid>

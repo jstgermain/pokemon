@@ -4,7 +4,7 @@ import AppBar from "@/components/layout/AppBar";
 
 export const metadata: Metadata = {
   title: "Pokemon Explorer",
-  description: "Explore and discover Pokemon",
+  description: "Explore and discover Pokemon from the PokeAPI. View detailed information including types, abilities, height, weight, and descriptions.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <AppBar />
           {children}

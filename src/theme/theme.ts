@@ -3,10 +3,10 @@ import { createTheme } from "@mui/material/styles";
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#FFCB05",
+      main: "#E6B800",
       dark: "#B3A125",
-      light: "#FFD633",
-      contrastText: "#2A75BB",
+      light: "#FFCB05",
+      contrastText: "#000000",
     },
     secondary: {
       main: "#2A75BB",
@@ -21,9 +21,12 @@ export const theme = createTheme({
       default: "#F5F5F5",
       paper: "#FFFFFF",
     },
+    grey: {
+      50: "#F8F9FA",
+    },
     text: {
       primary: "#212121",
-      secondary: "#757575",
+      secondary: "#6E6E6E",
     },
   },
   typography: {
@@ -31,12 +34,12 @@ export const theme = createTheme({
     h1: {
       fontWeight: 700,
       fontSize: "2.5rem",
-      color: "#2A75BB",
+      color: "#1C5280",
     },
     h2: {
       fontWeight: 600,
       fontSize: "2rem",
-      color: "#2A75BB",
+      color: "#1C5280",
     },
     h3: {
       fontWeight: 600,
