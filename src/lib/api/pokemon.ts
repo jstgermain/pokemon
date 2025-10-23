@@ -19,10 +19,16 @@ export async function fetchPokemonSpecies(id: number): Promise<PokemonSpecies> {
   return response.json();
 }
 
+function getSecureRandomInt(max: number): number {
+  const randomBuffer = new Uint32Array(1);
+  crypto.getRandomValues(randomBuffer);
+  return (randomBuffer[0] % max) + 1;
+}
+
 export function getRandomPokemonIds(count: number): number[] {
   const ids = new Set<number>();
   while (ids.size < count) {
-    ids.add(Math.floor(Math.random() * API_CONFIG.TOTAL_POKEMON) + 1);
+    ids.add(getSecureRandomInt(API_CONFIG.TOTAL_POKEMON));
   }
   return Array.from(ids);
 }
